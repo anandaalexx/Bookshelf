@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const buttonContainer = document.createElement("div");
         buttonContainer.classList.add("button-container");
 
-        const statusLabel = document.createElement("p");
+        const statusLabel = document.createElement("button");
         statusLabel.textContent = book.isComplete
           ? "Selesai dibaca"
           : "Belum selesai dibaca";
@@ -93,9 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
           : "#ebe834";
         statusLabel.style.color = "white";
         statusLabel.style.borderRadius = "4px";
-        statusLabel.style.marginBottom = "10px";
         statusLabel.style.display = "inline-block";
         statusLabel.setAttribute("data-testid", "bookItemIsCompleteButton");
+        statusLabel.onclick = () => toggleBookStatus(book.id);
 
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Hapus Buku";
@@ -107,15 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
         editButton.setAttribute("data-testid", "bookItemEditButton");
         editButton.onclick = () => editBook(book.id);
 
-        buttonContainer.append(deleteButton, editButton);
+        buttonContainer.append(statusLabel, deleteButton, editButton);
 
-        bookItem.append(
-          bookTitle,
-          bookAuthor,
-          bookYear,
-          statusLabel,
-          buttonContainer
-        );
+        bookItem.append(bookTitle, bookAuthor, bookYear, buttonContainer);
 
         if (book.isComplete) {
           completeBookList.appendChild(bookItem);
@@ -129,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const title = document.getElementById("bookFormTitle").value;
     const author = document.getElementById("bookFormAuthor").value;
-    const year = document.getElementById("bookFormYear").value;
+    const year = parseInt(document.getElementById("bookFormYear").value, 10);
     const isComplete = document.getElementById("bookFormIsComplete").checked;
     const id = new Date().getTime();
 
